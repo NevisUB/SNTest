@@ -28,8 +28,6 @@ for x in xrange(len(sys.argv)):
 # Specify IO mode
 my_proc.set_io_mode(fmwk.storage_manager.READ)
 
-# Specify output root file name
-my_proc.set_ana_output_file("ahoaho.root");
 
 # Attach a template process
 my_ana= fmwk.HeaderCheck()

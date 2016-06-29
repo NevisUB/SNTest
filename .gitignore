@@ -1,6 +1,7 @@
 *.o
 *.so
-
+*.root
 *Cint*
 *.root
 *.dat
+*Dict.cxx

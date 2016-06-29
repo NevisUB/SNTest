@@ -3,6 +3,9 @@
 
 #include "HeaderCheck.hh"
 
+
+#include <fstream>
+
 namespace larlight {
 
   bool HeaderCheck::initialize() {
@@ -17,7 +20,33 @@ namespace larlight {
     larlight::event_tpcfifo *event_wf = (event_tpcfifo*)(storage->get_data(DATA::TPCFIFO)); 
 
     _frame_numbers.emplace_back(event_wf->event_frame_number());
+
+    ofstream ofile;
+    ofile.open("loser_decoded.txt");
     
+    
+    std::cout << "size of event_wf is " << event_wf->size() << "\n";
+    std::cout << "\nevent is " << event_wf->event_number();
+
+    ofile << event_wf->event_number() << ",";
+    
+    for ( const auto& f : *event_wf ) {
+      ofile << f.channel_number() << ",";
+      std::cout << "\nchannel is " << f.channel_number();
+      ofile << f.readout_sample_number_RAW() << ",";
+      std::cout << "\ntime is " << f.readout_sample_number_RAW();
+      ofile << f.readout_frame_number() << ",";
+      std::cout << "\nframe is " << f.readout_frame_number();
+      std::cout << "\nADCs... \n\n";
+      for(const auto& adc : f )	{
+	ofile << adc << ",";
+	std::cout << adc << " ";
+      }
+      ofile << "0\n";
+    }
+
+    ofile.close();
+      
     return true;
     
   }
