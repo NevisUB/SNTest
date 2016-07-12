@@ -1,6 +1,0 @@
-#ifndef SNTEST_TPCDETWAVEFORM_SAMPLE_CXX
-#define SNTEST_TPCDETWAVEFORM_SAMPLE_CXX
-
-#include "sample.h"
-
-#endif
