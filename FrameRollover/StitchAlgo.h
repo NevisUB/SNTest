@@ -13,7 +13,7 @@ namespace larlite {
   public:
 
     /// Default constructor
-    StitchAlgo(){}
+    StitchAlgo() {}
 
     /// Default destructor
     ~StitchAlgo(){}
@@ -21,7 +21,12 @@ namespace larlite {
     event_tpcdetwaveform* stitch(const event_tpcfifo& tpcfifo_before,
 				 const event_tpcfifo& tpcfifo);
   private:
+    
     event_tpcdetwaveform _event_waveforms;
+
+    bool _convert_fifo(const tpcfifo& fifo,
+		       const tpcfifo& before,
+		       tpcdetwaveform& tpcwf);
 
     void _reset_event();
     
