@@ -1,61 +1,48 @@
-#ifndef LARLITE_ALIGN_CXX
-#define LARLITE_ALIGN_CXX
+#ifndef ALIGN_CXX
+#define ALIGN_CXX
 
 #include "Align.h"
 
+#include "DataFormat/tpcdetwaveform.h"
+
 namespace larlite {
 
-  bool Align::initialize() {
+  bool Align::align_events(storage_manager* sm1, storage_manager* sm2, storage_manager* sm3) {
+    
+    for(unsigned i=0;i<sm1->get_entries(); ++i){
+      
+      auto ev_sn_digits = sm1->get_data<event_tpcdetwaveform>("snova");
+      auto ev_tr_digits = sm2->get_data<event_tpcdetwaveform>("trig");
 
-    //
-    // This function is called in the beggining of event loop
-    // Do all variable initialization you wish to do here.
-    // If you have a histogram to fill in the event loop, for example,
-    // here is a good place to create one on the heap (i.e. "new TH1D"). 
-    //
+      auto fsnova=ev_sn_digits->Frame();
+      auto ftrig=ev_tr_digits->Frame();
 
-    return true;
-  }
-  
-  bool Align::analyze(storage_manager* storage) {
-  
-    //
-    // Do your event-by-event analysis here. This function is called for 
-    // each event in the loop. You have "storage" pointer which contains 
-    // event-wise data. To see what is available, check the "Manual.pdf":
-    //
-    // http://microboone-docdb.fnal.gov:8080/cgi-bin/ShowDocument?docid=3183
-    // 
-    // Or you can refer to Base/DataFormatConstants.hh for available data type
-    // enum values. Here is one example of getting PMT waveform collection.
-    //
-    // event_fifo* my_pmtfifo_v = (event_fifo*)(storage->get_data(DATA::PMFIFO));
-    //
-    // if( event_fifo )
-    //
-    //   std::cout << "Event ID: " << my_pmtfifo_v->event_id() << std::endl;
-    //
-  
-    return true;
-  }
+      int ctr=0;
+      
+      //same frame requirement
+      if ( fsnova == ftrig ) {
+	std::cout << "Found alignment on frame : " << fsnova << "\n";
+	
+	auto ev_sn_digits_out = sm3->get_data<event_tpcdetwaveform>("snova_align");
+	auto ev_tr_digits_out = sm3->get_data<event_tpcdetwaveform>("trig_align");
+	
+	*(ev_sn_digits_out) = *(ev_sn_digits);
+	*(ev_tr_digits_out) = *(ev_tr_digits);
 
-  bool Align::finalize() {
+	sm3->set_id(1,1,ctr);
+	sm3->next_event(true);
+	
+	ctr++;
+	sm2->next_event(false);
+      }
+      sm1->next_event(false);
+    }
 
-    // This function is called at the end of event loop.
-    // Do all variable finalization you wish to do here.
-    // If you need, you can store your ROOT class instance in the output
-    // file. You have an access to the output file through "_fout" pointer.
-    //
-    // Say you made a histogram pointer h1 to store. You can do this:
-    //
-    // if(_fout) { _fout->cd(); h1->Write(); }
-    //
-    // else 
-    //   print(MSG::ERROR,__FUNCTION__,"Did not find an output file pointer!!! File not opened?");
-    //
-  
+    
+    
     return true;
   }
 
+  
 }
 #endif
