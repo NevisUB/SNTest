@@ -27,6 +27,7 @@ namespace larlite {
       
       if( _convert_fifo(fifo,*before,tpcwf) )
 	 _event_waveforms.emplace_back(std::move(tpcwf));
+      
     }
 
     _event_waveforms.SetEvent(ev_tpcfifo.event_number());
@@ -39,15 +40,16 @@ namespace larlite {
 				 const tpcfifo& before,
 				 tpcdetwaveform& tpcwf) {
 
-    if (!fifo.size()) false;
+    if (!fifo.size()) return false;
     
     tpcwf.resize(fifo.size());
 
     std::memcpy(tpcwf.data(),fifo.data(),sizeof(unsigned short)*fifo.size());
 
     tpcwf.SetChannelNumber(fifo.channel_number());
-    tpcwf.SetTimeStamp(fifo.readout_sample_number_RAW());
-      
+    tpcwf.SetTimeStamp(fifo.readout_sample_number_RAW() - _presamples);
+    tpcwf.SetFrame(fifo.readout_frame_number());
+			 
     return true;
   }
   

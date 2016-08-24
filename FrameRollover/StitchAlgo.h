@@ -13,13 +13,16 @@ namespace larlite {
   public:
 
     /// Default constructor
-    StitchAlgo() {}
+    StitchAlgo() : _presamples(0) {}
 
     /// Default destructor
     ~StitchAlgo(){}
 
     event_tpcdetwaveform* stitch(const event_tpcfifo& tpcfifo_before,
 				 const event_tpcfifo& tpcfifo);
+
+    void SetPreSamples(short p) { _presamples = p; }
+    
   private:
     
     event_tpcdetwaveform _event_waveforms;
@@ -29,6 +32,8 @@ namespace larlite {
 		       tpcdetwaveform& tpcwf);
 
     void _reset_event();
+
+    short _presamples;
     
   };
 }

@@ -28,7 +28,9 @@ namespace larlite {
   
   public:
     
-    Rolodex() : _event_ctr(-1)
+    Rolodex() :
+      _event_ctr(-1)
+      ,_producer("tpcdigit")
     { _name="Rolodex"; _fout=nullptr;}
     
     virtual ~Rolodex(){}
@@ -38,6 +40,9 @@ namespace larlite {
     virtual bool finalize();
 
     void SetStitcher(StitchAlgo* sa) { _stitcher = sa; }
+
+    void SetProducer(std::string p)  { _producer = p; }
+    
     
   protected:
 
@@ -48,7 +53,8 @@ namespace larlite {
     int _event_ctr;
     
     StitchAlgo* _stitcher;
-    
+
+    std::string _producer;
   };
 }
 #endif

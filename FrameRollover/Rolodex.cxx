@@ -17,7 +17,7 @@ namespace larlite {
     _fifoevents.emplace_front(*event_fifo);
     
     //get the output
-    event_tpcdetwaveform* event_tpcdet = storage->get_data<event_tpcdetwaveform>("tpcdigit");
+    event_tpcdetwaveform* event_tpcdet = storage->get_data<event_tpcdetwaveform>(_producer);
     
     //first event is just setup, we always lag 1 event behind
 

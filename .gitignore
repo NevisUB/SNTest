@@ -5,3 +5,4 @@
 *.root
 *.dat
 *Dict.cxx
+.ipynb_checkpoints
