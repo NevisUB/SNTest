@@ -13,7 +13,7 @@ namespace larlite {
   public:
 
     /// Default constructor
-    StitchAlgo() : _presamples(0) {}
+    StitchAlgo() : _presamples(0), _t_offset(0xfff), _offset(0), _prev_t(-1) {}
 
     /// Default destructor
     ~StitchAlgo(){}
@@ -34,7 +34,10 @@ namespace larlite {
     void _reset_event();
 
     short _presamples;
-    
+
+    unsigned short _t_offset;
+    short _offset;
+    short _prev_t;
   };
 }
 

@@ -11,8 +11,8 @@ from larlite import larlite as fmwk
 
 my_proc = fmwk.ana_processor()
 
-for x in xrange(len(sys.argv)-2):
-    my_proc.add_input_file(sys.argv[x+2])
+for x in xrange(len(sys.argv)-3):
+    my_proc.add_input_file(sys.argv[x+3])
 
 my_proc.set_io_mode(fmwk.storage_manager.kBOTH)
 
@@ -31,6 +31,6 @@ rolo.SetStitcher(stitch)
 my_proc.add_process(rolo)
 
 # Let's run it.
-my_proc.run(0,10*1250);
+my_proc.run(0,10*int(sys.argv[2]));
 
 sys.exit(0)
